@@ -1,10 +1,11 @@
 import express, { Router } from 'express';
-import testController from './controllers/testController';
+import authController from './controllers/authController';
 
 
 const routes = Router();
 
-routes.use('/', testController)
+
+routes.use('/auth',authController)
 
 
 export default routes
