@@ -1,0 +1,49 @@
+
+server/.env
+# Node dependencies
+node_modules/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# dotenv environment variables
+.env
+.env.*
+!.env.example
+
+# Build output
+dist/
+build/
+.tmp/
+
+# Coverage
+coverage/
+*.lcov
+
+# Cache
+.cache/
+.npm/
+.yarn/
+.pnpm-store/
+
+# IDE & editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+backend/.env
