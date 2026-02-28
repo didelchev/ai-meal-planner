@@ -4,6 +4,20 @@ export interface User {
     email: string,
     created_at: Date
 }
+export interface UserWithPassword { 
+    id: string,
+    username: string,
+    password_hash: string,
+    email: string,
+    created_at: Date
+}
+
+export interface AuthResponse { 
+    _id: string,
+    email: string,
+    username: string,
+    accessToken: string
+}
 
 export interface RegisterBody { 
     email: string,
