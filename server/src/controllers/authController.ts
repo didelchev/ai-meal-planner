@@ -8,6 +8,7 @@ authController.post('/register', async (req: Request, res: Response) => {
 
     try {
         const user = await authService.register(email, username, password)
+
         res.status(201).json(user)
     } catch (error) {
         if(error instanceof Error) {
@@ -20,7 +21,22 @@ authController.post('/register', async (req: Request, res: Response) => {
 })
 
 authController.post('/login', async (req: Request, res: Response) => { 
-    
+    const { email, password } = req.body;
+
+    try {
+        const user = await authService.login(email, password)
+        
+        res.status(201).json({status: "success", data: user})
+
+    } catch (error) {
+        if(error instanceof Error) {
+            res.status(400).json({message: error.message})
+        }else{
+            res.status(400).json({message: "An unknown error occured !"})
+        }
+    }
+
+
 
 })
 
