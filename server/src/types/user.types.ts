@@ -1,3 +1,6 @@
+import { JwtPayload } from "jsonwebtoken"
+import { Request } from "express"
+
 export interface User { 
     id: string,
     username: string,
@@ -28,4 +31,17 @@ export interface RegisterBody {
 export interface LoginBody { 
     email: string,
     password: string
+}
+
+
+export interface TokenPayload extends JwtPayload {
+  _id: string;
+  email: string;
+}
+
+export interface AuthRequest extends Request {
+  user?: {
+    _id: string;
+    email: string;
+  }
 }
