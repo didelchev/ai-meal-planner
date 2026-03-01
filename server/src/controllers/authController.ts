@@ -9,7 +9,8 @@ authController.post('/register', async (req: Request, res: Response) => {
     try {
         const user = await authService.register(email, username, password)
 
-        res.status(201).json(user)
+        res.status(201).json({status: "success", data: user})
+        
     } catch (error) {
         if(error instanceof Error) {
             res.status(400).json({message: error.message})
@@ -25,6 +26,12 @@ authController.post('/login', async (req: Request, res: Response) => {
 
     try {
         const user = await authService.login(email, password)
+
+        res.cookie('jwt', user.accessToken, { 
+            httpOnly: true,
+            sameSite: "strict",
+            maxAge: (1000 * 60 * 60 * 24) * 7
+        })
         
         res.status(201).json({status: "success", data: user})
 
@@ -36,8 +43,13 @@ authController.post('/login', async (req: Request, res: Response) => {
         }
     }
 
+})
 
 
+authController.post('/logout', (req: Request, res: Response) => {
+    res.clearCookie('jwt');
+
+    res.status(200).json({status: "success", message: "Loged out successfully !"})
 })
 
 export default authController

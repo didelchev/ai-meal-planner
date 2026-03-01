@@ -10,6 +10,8 @@ import { isValidEmail, isValidPassword } from "../utils/validators";
 export const authService = { 
    async register(email: string, username: string, password: string): Promise<AuthResponse> { 
 
+        const SALT_ROUNDS = 10;
+
         //TODO: Remove validations from authService
         isValidEmail(email);
 
@@ -21,7 +23,7 @@ export const authService = {
             throw new Error("User with that email already exists !")
         }
 
-        const hashedPassword = await bcrypt.hash(password, 10);
+        const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
 
         const user = await createUser(email, username, hashedPassword);
 
@@ -67,5 +69,7 @@ export const authService = {
 
 
 
-    }
+    },
+    
+    logout():void { }
 }
