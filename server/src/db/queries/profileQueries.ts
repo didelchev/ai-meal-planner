@@ -15,6 +15,7 @@ export const createProfile = async (userId: string, profile: ProfileBody) => {
       profile.activityLevel,
       profile.goal,
       profile.dietaryRestrictions,
+      profile.foodDislikes,
       profile.mealsPerDay,
     ],
   );
