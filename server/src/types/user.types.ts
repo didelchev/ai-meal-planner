@@ -45,3 +45,16 @@ export interface AuthRequest extends Request {
     email: string;
   }
 }
+
+
+export interface ProfileBody {
+  age: number;
+  weightKg: number;
+  heightCm: number;
+  sex: 'male' | 'female';
+  activityLevel: 'sedentary' | 'light' | 'moderate' | 'active' | 'very_active';
+  goal: 'lose' | 'maintain' | 'gain';
+  dietaryRestrictions: string[];
+  foodDislikes: string;
+  mealsPerDay: number;
+}
