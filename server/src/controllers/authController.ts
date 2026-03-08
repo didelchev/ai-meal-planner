@@ -3,7 +3,7 @@ import { authService } from "../services/authService";
 
 const authController = Router();
 
-authController.post('/register', async (req: Request, res: Response) => { 
+authController.post('/register', async (req: Request, res: Response): Promise<void> => { 
     const { email, username, password } = req.body;
 
     try {
@@ -21,7 +21,7 @@ authController.post('/register', async (req: Request, res: Response) => {
 
 })
 
-authController.post('/login', async (req: Request, res: Response) => { 
+authController.post('/login', async (req: Request, res: Response): Promise<void> => { 
     const { email, password } = req.body;
 
     try {
@@ -46,7 +46,7 @@ authController.post('/login', async (req: Request, res: Response) => {
 })
 
 
-authController.post('/logout', (req: Request, res: Response) => {
+authController.post('/logout', (req: Request, res: Response):void => {
     res.clearCookie('jwt');
 
     res.status(200).json({status: "success", message: "Loged out successfully !"})
