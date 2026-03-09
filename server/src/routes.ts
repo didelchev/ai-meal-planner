@@ -3,10 +3,13 @@ import authController from './controllers/authController';
 import tdeeController from './controllers/tdeeController';
 import profileController from './controllers/profileController';
 import { authMiddleware } from './middlewares/authMiddleware';
+import testController from './controllers/testController';
 
 
 const routes = Router();
 
+
+routes.use("/", testController)
 
 routes.use('/auth', authController)
 
