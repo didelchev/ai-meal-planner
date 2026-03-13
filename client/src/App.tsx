@@ -1,31 +1,21 @@
-import { useEffect } from 'react';
-import './App.css'
-import { authAPI } from './api/authApi';
+import React from 'react'
+import { Route, Routes } from 'react-router-dom'
+import HomePage from './pages/home/HomePage'
+import LoginPage from './pages/auth/LoginPage'
+import RegisterPage from './pages/auth/RegisterPage'
+import { AuthContext } from './contexts/AuthContext'
 
-function App() {
-
-
-useEffect(() => {
-  const loginUser = async () => {
-
-    const userData = await authAPI.login('johndoe@gmail.com', '123456')
-
-    console.log(userData)
-  }
-
-  loginUser();
-
-},[])
-
-
-
-
+const App = () => {
   return (
-    <>
-    <h1>My App</h1>
-    </>
+    <AuthContext value={'asd'}>
+      <Routes>
+      <Route path='/' element={<HomePage />} />
+      <Route path='/login' element={<LoginPage />} />
+      <Route path='/register' element={<RegisterPage />} />
+    </Routes>
+    </AuthContext>
+    
   )
-
 }
 
 export default App
