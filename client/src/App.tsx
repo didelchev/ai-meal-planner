@@ -1,20 +1,19 @@
 import { useEffect } from 'react';
 import './App.css'
-import { API } from './utils/fetcher'
+import { authAPI } from './api/authApi';
 
 function App() {
-const BASE_URL = "http://localhost:5000"
 
 
 useEffect(() => {
+  const loginUser = async () => {
 
-  const getData = async() => {
-    const res = await API.get(BASE_URL);
+    const userData = await authAPI.login('johndoe@gmail.com', '123456')
 
-    console.log(res)
+    console.log(userData)
   }
 
-  getData()
+  loginUser();
 
 },[])
 
