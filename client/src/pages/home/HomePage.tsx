@@ -1,16 +1,23 @@
 import React, { useEffect } from 'react'
 import { authAPI } from '../../api/authApi'
+import { useAuthContext } from '../../contexts/AuthContext'
 
 const HomePage = () => {
 
+  const { saveSession } = useAuthContext()
+
   useEffect(() =>  {
-    const loginUser = async ( ) => {
-      const user = await authAPI.register("johndoe@gmail.com", 'john.doe', '123456')
+      const handleLogin = async () => {
+        const response = await authAPI.login('johndoe@gmail.com', '123456')
 
-      console.log(user)
-    }
+        console.log(response)
 
-    loginUser()
+        saveSession(response)
+
+      }
+
+      handleLogin()
+
   },[])
 
 
