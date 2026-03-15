@@ -1,7 +1,34 @@
 import { Link } from 'react-router-dom';
 import './AuthPage.css';
+import { useState } from 'react';
+import type { LoginBody } from '../../types/user.types';
+import { useLogin } from '../../hooks/useAuth';
 
 const LoginPage = () => {
+
+  const [ authData, setAuthData ] = useState<LoginBody>({
+    email: '',
+    password: ''
+  })
+
+  const login  = useLogin();
+  
+  const changeHandler = (e: any) => {
+    setAuthData({...authData, [e.target.name]: e.target.value})
+  }
+
+  const loginHandler = async(e: React.SubmitEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    try {
+      await login(authData.email, authData.password)
+      console.log("success")
+    } catch (error) { 
+      console.log(`Error: ${error}`)
+    }
+  }
+
+  
   return (
     <div className='auth-container'>
       <div className='auth-card'>
@@ -11,13 +38,16 @@ const LoginPage = () => {
           <p>Sign in to your account to continue</p>
         </div>
 
-        <div className='auth-form'>
+        <form className='auth-form' onSubmit={loginHandler}>
           <div className='form-group'>
             <label htmlFor='email'>Email</label>
             <input
               id='email'
+              name='email'
               type='email'
               placeholder='you@example.com'
+              value={authData.email}
+              onChange={changeHandler}
             />
           </div>
 
@@ -25,13 +55,16 @@ const LoginPage = () => {
             <label htmlFor='password'>Password</label>
             <input
               id='password'
+              name='password'
               type='password'
               placeholder='••••••••'
+              value={authData.password}
+              onChange={changeHandler}
             />
           </div>
 
           <button className='auth-button'>Sign In</button>
-        </div>
+        </form>
 
         <div className='auth-footer'>
           <p>Don't have an account? <Link to='/register'>Sign up</Link></p>
