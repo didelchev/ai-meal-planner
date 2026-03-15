@@ -17,7 +17,6 @@ const RegisterView = () => {
 
   const registerHandler = async (e: React.SubmitEvent<HTMLFormElement>) => {
       e.preventDefault()
-      
       try {
         await register(authData.email, authData.username, authData.password)
         console.log("Success")

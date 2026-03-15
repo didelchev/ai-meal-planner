@@ -1,27 +1,24 @@
 import { Link } from 'react-router-dom';
 import './AuthPage.css';
-import { useState } from 'react';
-import type { LoginBody } from '../../types/user.types';
 import { useLogin } from '../../hooks/useAuth';
+import { useForm } from '../../hooks/useForm';
 
 const LoginPage = () => {
 
-  const [ authData, setAuthData ] = useState<LoginBody>({
-    email: '',
-    password: ''
-  })
+ const { formData, changeHandler } = useForm({
+    email: "",
+    password: ""
+ });
 
   const login  = useLogin();
   
-  const changeHandler = (e: any) => {
-    setAuthData({...authData, [e.target.name]: e.target.value})
-  }
+  
 
   const loginHandler = async(e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
-      await login(authData.email, authData.password)
+      await login(formData.email, formData.password)
       console.log("success")
     } catch (error) { 
       console.log(`Error: ${error}`)
@@ -46,7 +43,7 @@ const LoginPage = () => {
               name='email'
               type='email'
               placeholder='you@example.com'
-              value={authData.email}
+              value={formData.email}
               onChange={changeHandler}
             />
           </div>
@@ -58,7 +55,7 @@ const LoginPage = () => {
               name='password'
               type='password'
               placeholder='••••••••'
-              value={authData.password}
+              value={formData.password}
               onChange={changeHandler}
             />
           </div>
