@@ -80,6 +80,24 @@
   transform: translateY(-1px);
 }
 
+.btn-logout {
+  font-size: 0.95em;
+  font-weight: 600;
+  color: #ffffff;
+  background-color: #e53e3e;
+  padding: 0.6em 1.4em;
+  border-radius: var(--radius-md);
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background-color var(--transition), transform var(--transition);
+}
+
+.btn-logout:hover {
+  background-color: #c53030;
+  transform: translateY(-1px);
+}
+
 /* HAMBURGER */
 
 .navbar-hamburger {
