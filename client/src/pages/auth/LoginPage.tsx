@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './AuthPage.css';
 import { useLogin } from '../../hooks/useAuth';
 import { useForm } from '../../hooks/useForm';
@@ -8,9 +8,12 @@ import Navbar from '../../components/navbar/Navbar';
 const LoginPage = () => {
   const login  = useLogin();
   const initialValues = { email: "", password: ""}
+  const navigate  = useNavigate();
+
   const loginHandler = async (formData: LoginBody) => {
     try {
       await login(formData.email, formData.password)
+      navigate("/")
       console.log("success")
     } catch (error) { 
       console.log(`Error: ${error}`)

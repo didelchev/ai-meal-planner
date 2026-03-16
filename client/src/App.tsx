@@ -1,17 +1,49 @@
-import { Route, Routes } from 'react-router-dom'
-import HomePage from './pages/home/HomePage'
-import LoginPage from './pages/auth/LoginPage'
-import RegisterPage from './pages/auth/RegisterPage'
+import { Route, Routes } from "react-router-dom";
+import HomePage from "./pages/home/HomePage";
+import LoginPage from "./pages/auth/LoginPage";
+import RegisterPage from "./pages/auth/RegisterPage";
+import DashboardPage from "./pages/dashboard/DashboardPage";
+import OnboardingPage from "./pages/onboarding/OnboardingPage";
+import ProfilePage from "./pages/profile/ProfilePage";
+import ProtectedRoutes from "./guards/ProtectedRoutes";
 
 const App = () => {
   return (
     <Routes>
-      <Route path='/' element={<HomePage />} />
-      <Route path='/login' element={<LoginPage />} />
-      <Route path='/register' element={<RegisterPage />} />
-    </Routes>
-    
-  )
-}
+      {/* Public */}
+      <Route path="/" element={<HomePage />} />
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/register" element={<RegisterPage />} />
 
-export default App
+      {/* Protected */}
+      <Route
+        path="/dashboard"
+        element={
+          <ProtectedRoutes>
+            <DashboardPage />
+          </ProtectedRoutes>
+        }
+      />
+
+      <Route
+        path="/onboarding"
+        element={
+          <ProtectedRoutes>
+            <OnboardingPage />
+          </ProtectedRoutes>
+        }
+      />
+
+      <Route
+        path="/profile"
+        element={
+          <ProtectedRoutes>
+            <ProfilePage />
+          </ProtectedRoutes>
+        }
+      />
+    </Routes>
+  );
+};
+
+export default App;

@@ -35,9 +35,9 @@ const HomePage = () => {
               <Link to="/register" className="btn-primary">
                 Get Started Free
               </Link>
-              <a href="#how-it-works" className="btn-outline">
+              <Link to="#how-it-works" className="btn-outline">
                 See How It Works
-              </a>
+              </Link>
             </div>
           </div>
           <div className="hero-visual">
