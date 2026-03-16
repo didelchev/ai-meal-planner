@@ -2,6 +2,7 @@ import { authAPI } from "../api/authApi";
 import { useAuthContext } from "../contexts/AuthContext"
 import type { User } from "../types/user.types";
 
+
 export const useLogin = () => {
     const { saveSession } = useAuthContext();
     
@@ -44,4 +45,15 @@ export const useRegister = () => {
     }
 
     return registerHandler
+}
+
+
+export const useLogout = ( ) => {
+    const { clearSession } = useAuthContext();
+
+    const logoutHandler = ( ) =>{
+        clearSession();
+    }
+
+    return logoutHandler
 }
