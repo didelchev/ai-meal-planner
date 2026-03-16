@@ -1,24 +1,22 @@
 import { Link } from 'react-router-dom';
-import './AuthPage.css';
-import { useState } from 'react';
 import type { RegisterBody } from '../../types/user.types';
 import { useRegister } from '../../hooks/useAuth';
+import { useForm } from '../../hooks/useForm';
+import './AuthPage.css';
 
 const RegisterView = () => {
 
-  const [authData, setAuthData ] = useState<RegisterBody>({
+  const initialValues = { 
     email: "",
     username: "",
     password: ""
-  });
+  }
 
   const register = useRegister();
 
-
-  const registerHandler = async (e: React.SubmitEvent<HTMLFormElement>) => {
-      e.preventDefault()
+  const registerHandler = async (formData: RegisterBody) => {
       try {
-        await register(authData.email, authData.username, authData.password)
+        await register(formData.email, formData.username, formData.password)
         console.log("Success")
       } catch (error) {
         console.log(error)
@@ -26,11 +24,9 @@ const RegisterView = () => {
 
   }
 
-  const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setAuthData({...authData, [e.target.name]: e.target.value})
-  }
-
+  const { formData , changeHandler, submitHandler } = useForm(initialValues, registerHandler)
   
+ 
   return (
     <div className='auth-container'>
       <div className='auth-card'>
@@ -40,7 +36,7 @@ const RegisterView = () => {
           <p>Start your meal planning journey today</p>
         </div>
 
-        <form className='auth-form' onSubmit={registerHandler}>
+        <form className='auth-form' onSubmit={submitHandler}>
           <div className='form-group'>
             <label htmlFor='username'>Username</label>
             <input
@@ -48,7 +44,7 @@ const RegisterView = () => {
               name='username'
               type='text'
               placeholder='johndoe'
-              value={authData.username}
+              value={formData.username}
               onChange={changeHandler}
             />
           </div>
@@ -60,7 +56,7 @@ const RegisterView = () => {
               type='email'
               name='email'
               placeholder='you@example.com'
-              value={authData.email}
+              value={formData.email}
               onChange={changeHandler}
             />
           </div>
@@ -72,7 +68,7 @@ const RegisterView = () => {
               type='password'
               name='password'
               placeholder='••••••••'
-              value={authData.password}
+              value={formData.password}
               onChange={changeHandler}
             />
           </div>
