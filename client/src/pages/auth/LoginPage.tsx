@@ -3,6 +3,7 @@ import './AuthPage.css';
 import { useLogin } from '../../hooks/useAuth';
 import { useForm } from '../../hooks/useForm';
 import type { LoginBody } from '../../types/user.types';
+import Navbar from '../../components/navbar/Navbar';
 
 const LoginPage = () => {
   const login  = useLogin();
@@ -20,9 +21,10 @@ const LoginPage = () => {
 
   
   return (
+    <>
+    <Navbar/>
     <div className='auth-container'>
       <div className='auth-card'>
-
         <div className='auth-header'>
           <h1>Welcome back</h1>
           <p>Sign in to your account to continue</p>
@@ -62,6 +64,8 @@ const LoginPage = () => {
 
       </div>
     </div>
+    </>
+    
   );
 };
 
