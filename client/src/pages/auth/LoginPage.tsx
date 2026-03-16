@@ -2,21 +2,12 @@ import { Link } from 'react-router-dom';
 import './AuthPage.css';
 import { useLogin } from '../../hooks/useAuth';
 import { useForm } from '../../hooks/useForm';
+import type { LoginBody } from '../../types/user.types';
 
 const LoginPage = () => {
-
- const { formData, changeHandler } = useForm({
-    email: "",
-    password: ""
- });
-
   const login  = useLogin();
-  
-  
-
-  const loginHandler = async(e: React.SubmitEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
+  const initialValues = { email: "", password: ""}
+  const loginHandler = async (formData: LoginBody) => {
     try {
       await login(formData.email, formData.password)
       console.log("success")
@@ -24,6 +15,8 @@ const LoginPage = () => {
       console.log(`Error: ${error}`)
     }
   }
+
+  const { formData, changeHandler, submitHandler } = useForm(initialValues, loginHandler);
 
   
   return (
@@ -35,7 +28,7 @@ const LoginPage = () => {
           <p>Sign in to your account to continue</p>
         </div>
 
-        <form className='auth-form' onSubmit={loginHandler}>
+        <form className='auth-form' onSubmit={submitHandler}>
           <div className='form-group'>
             <label htmlFor='email'>Email</label>
             <input
