@@ -3,6 +3,7 @@ import type { RegisterBody } from '../../types/user.types';
 import { useRegister } from '../../hooks/useAuth';
 import { useForm } from '../../hooks/useForm';
 import './AuthPage.css';
+import Navbar from '../../components/navbar/Navbar';
 
 const RegisterView = () => {
 
@@ -28,6 +29,8 @@ const RegisterView = () => {
   
  
   return (
+    <>
+    <Navbar />
     <div className='auth-container'>
       <div className='auth-card'>
 
@@ -92,6 +95,8 @@ const RegisterView = () => {
 
       </div>
     </div>
+    </>
+    
   );
 };
 
