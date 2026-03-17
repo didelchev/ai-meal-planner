@@ -27,3 +27,28 @@ export interface RegisterBody {
   username: string;
   password: string;
 }
+
+export interface ProfileBody {
+  age: number;
+  weightKg: number;
+  heightCm: number;
+  sex: 'male' | 'female';
+  activityLevel: 'sedentary' | 'light' | 'moderate' | 'active' | 'very_active';
+  goal: 'lose' | 'maintain' | 'gain';
+  dietaryRestrictions: string[];
+  foodDislikes: string;
+  mealsPerDay: number;
+}
+
+
+export interface MacroTargets {
+  calories: number;
+  proteinG: number;
+  carbsG: number;
+  fatG: number;
+}
+
+export interface ProfileResponse { 
+  profile: ProfileBody,
+  macros: MacroTargets
+}
