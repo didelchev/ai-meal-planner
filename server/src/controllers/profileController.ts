@@ -59,8 +59,8 @@ profileController.post('/', async (req: AuthRequest, res: Response) => {
          res.json({ userProfile, macros})
        
     } catch (error) {
-          console.error(error);
-    res.status(500).json({ message: 'Server error' });
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
     }
 })
 

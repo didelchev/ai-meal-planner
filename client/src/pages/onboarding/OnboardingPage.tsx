@@ -2,18 +2,34 @@ import { useState } from 'react';
 import { useForm } from '../../hooks/useForm';
 import './OnboardingPage.css';
 import { TrendingDown, Minus, TrendingUp } from 'lucide-react';
+import type { ProfileBody } from '../../types/user.types';
+import { useProfile } from '../../hooks/useProfile';
 
 
 const OnboardingPage = () => {
 
-const [sex , setSex] =useState('male');
-const [goal, setGoal] = useState('maintain');
-const [activityLevel, setActivityLevel] = useState('sedentary');
+const [sex , setSex] =useState<"male" | "female">('male');
+const [goal, setGoal] = useState<"maintain" | "lose" | "gain">('maintain');
+const [activityLevel, setActivityLevel] = useState<"sedentary" | "light" | "moderate" | "active" | "very_active">('sedentary');
 const [mealsPerDay, setMealsPerDay] = useState(3);
 const [dietaryRestrictions, setDietaryRestrictions] = useState<string[]>([]);
 
-const profileHandler = async (formData: any) => {
-  
+const createUserProfile = useProfile();
+
+
+const profileHandler = async (formData: Record<string, string>) => {
+  const profileData: ProfileBody = { 
+    age: Number(formData.age),
+    weightKg: Number(formData.weightKg),
+    heightCm: Number(formData.heightCm),
+    sex,
+    goal,
+    activityLevel,
+    dietaryRestrictions,
+    foodDislikes: formData.foodDislikes,
+    mealsPerDay,
+  }
+  await createUserProfile(profileData)
 }
 
 
@@ -34,7 +50,6 @@ const handleDietaryRestrictions = (e: React.ChangeEvent<HTMLInputElement>) => {
 
 }
 
-
   return (
     <div className='onboarding-container'>
       <div className='onboarding-card'>
@@ -44,7 +59,7 @@ const handleDietaryRestrictions = (e: React.ChangeEvent<HTMLInputElement>) => {
           <p>Tell us about yourself so we can build your perfect meal plan</p>
         </div>
 
-        <form className='onboarding-form' >
+        <form className='onboarding-form' onSubmit={submitHandler}>
           {/* BASIC STATS */}
           <div className='form-section'>
             <h3>Basic stats</h3>
@@ -133,7 +148,7 @@ const handleDietaryRestrictions = (e: React.ChangeEvent<HTMLInputElement>) => {
                 <span className='activity-name'>Active</span>
                 <span className='activity-desc'>6-7 days/week</span>
               </div>
-              <div className={`activity-card ${activityLevel === 'very active' ? 'active' : ''}`} onClick={() => setActivityLevel('very active')}>
+              <div className={`activity-card ${activityLevel === 'very_active' ? 'active' : ''}`} onClick={() => setActivityLevel('very_active')}>
                 <span className='activity-name'>Very Active</span>
                 <span className='activity-desc'>Intense daily</span>
               </div>
