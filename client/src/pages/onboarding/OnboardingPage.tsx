@@ -3,7 +3,7 @@ import { useForm } from '../../hooks/useForm';
 import './OnboardingPage.css';
 import { TrendingDown, Minus, TrendingUp } from 'lucide-react';
 import type { ProfileBody } from '../../types/user.types';
-import { useProfile } from '../../hooks/useProfile';
+import { useCreateProfile } from '../../hooks/useProfile';
 
 
 const OnboardingPage = () => {
@@ -14,7 +14,7 @@ const [activityLevel, setActivityLevel] = useState<"sedentary" | "light" | "mode
 const [mealsPerDay, setMealsPerDay] = useState(3);
 const [dietaryRestrictions, setDietaryRestrictions] = useState<string[]>([]);
 
-const createUserProfile = useProfile();
+const createUserProfile = useCreateProfile();
 
 
 const profileHandler = async (formData: Record<string, string>) => {
