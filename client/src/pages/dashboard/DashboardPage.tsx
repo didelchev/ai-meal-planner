@@ -1,8 +1,15 @@
 import './DashboardPage.css';
 import Navbar from '../../components/navbar/Navbar';
 import { Flame, Beef, Wheat, Droplets, UtensilsCrossed} from 'lucide-react';
+import { useAuthContext } from '../../contexts/AuthContext';
+import { useGetProfile } from '../../hooks/useProfile';
 
 const DashboardPage = () => {
+
+const userData = useAuthContext();
+
+const { userProfile } = useGetProfile();
+
   return (
     <>
       <Navbar />
@@ -10,7 +17,7 @@ const DashboardPage = () => {
 
         {/* WELCOME */}
         <div className='dashboard-welcome'>
-          <h1>Welcome back, <span>Daniel</span></h1>
+          <h1>Welcome back, <span>{userData.user?.username}</span></h1>
           <p>Here's your nutrition overview for today</p>
         </div>
 
@@ -21,7 +28,7 @@ const DashboardPage = () => {
               <Flame size={20} />
             </div>
             <div className='macro-info'>
-              <span className='macro-value'>2,840</span>
+              <span className='macro-value'>{userProfile?.macros.calories}</span>
               <span className='macro-label'>Calories</span>
             </div>
           </div>
@@ -30,7 +37,7 @@ const DashboardPage = () => {
               <Beef size={20} />
             </div>
             <div className='macro-info'>
-              <span className='macro-value'>160g</span>
+              <span className='macro-value'>{userProfile?.macros.proteinG}</span>
               <span className='macro-label'>Protein</span>
             </div>
           </div>
@@ -39,7 +46,7 @@ const DashboardPage = () => {
               <Wheat size={20} />
             </div>
             <div className='macro-info'>
-              <span className='macro-value'>320g</span>
+              <span className='macro-value'>{userProfile?.macros.carbsG}</span>
               <span className='macro-label'>Carbs</span>
             </div>
           </div>
@@ -48,7 +55,7 @@ const DashboardPage = () => {
               <Droplets size={20} />
             </div>
             <div className='macro-info'>
-              <span className='macro-value'>85g</span>
+              <span className='macro-value'>{userProfile?.macros.fatG}</span>
               <span className='macro-label'>Fat</span>
             </div>
           </div>
