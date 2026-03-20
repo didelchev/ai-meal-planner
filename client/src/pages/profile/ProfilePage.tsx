@@ -2,9 +2,14 @@ import { useState } from 'react';
 import Navbar from '../../components/navbar/Navbar';
 import { TrendingDown, Minus, TrendingUp, Flame, Beef, Wheat, Droplets } from 'lucide-react';
 import './ProfilePage.css';
+import { useGetProfile } from '../../hooks/useProfile';
 
 const ProfilePage = () => {
   const [activeTab, setActiveTab] = useState<'stats' | 'goal' | 'preferences'>('stats');
+
+
+  const { userProfile } = useGetProfile();
+
 
   return (
     <>
@@ -23,7 +28,7 @@ const ProfilePage = () => {
               <Flame size={16} />
             </div>
             <div>
-              <span className='profile-macro-value'>2,840</span>
+              <span className='profile-macro-value'>{userProfile?.macros.calories}</span>
               <span className='profile-macro-label'>kcal / day</span>
             </div>
           </div>
@@ -32,7 +37,7 @@ const ProfilePage = () => {
               <Beef size={16} />
             </div>
             <div>
-              <span className='profile-macro-value'>160g</span>
+              <span className='profile-macro-value'>{userProfile?.macros.proteinG}g</span>
               <span className='profile-macro-label'>Protein</span>
             </div>
           </div>
@@ -41,7 +46,7 @@ const ProfilePage = () => {
               <Wheat size={16} />
             </div>
             <div>
-              <span className='profile-macro-value'>320g</span>
+              <span className='profile-macro-value'>{userProfile?.macros.carbsG}g</span>
               <span className='profile-macro-label'>Carbs</span>
             </div>
           </div>
@@ -50,7 +55,7 @@ const ProfilePage = () => {
               <Droplets size={16} />
             </div>
             <div>
-              <span className='profile-macro-value'>85g</span>
+              <span className='profile-macro-value'>{userProfile?.macros.fatG}g</span>
               <span className='profile-macro-label'>Fat</span>
             </div>
           </div>
