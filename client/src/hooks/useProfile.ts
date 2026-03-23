@@ -26,13 +26,14 @@ export const useCreateProfile = () => {
 
 export const useGetProfile = () => { 
     const [userProfile, setUserProfile] = useState<ProfileResponse | null>(null);
-    //TODO: add loading state
+    const [ isLoading, setIsLoading] = useState(true);
+
     useEffect(() => {
         (async () => {
             try {
                 const userProfileData = await profileAPI.getUserProfile();
-            
                 setUserProfile(userProfileData)
+                setIsLoading(false)
             } catch (error) {
                 if(error instanceof Error){
                     console.log(error.message)
@@ -43,7 +44,7 @@ export const useGetProfile = () => {
         })()
     },[])
 
-    return { userProfile, setUserProfile}
+    return { userProfile, setUserProfile, isLoading}
 }
 
 
