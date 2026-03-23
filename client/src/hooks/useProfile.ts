@@ -31,7 +31,7 @@ export const useGetProfile = () => {
         (async () => {
             try {
                 const userProfileData = await profileAPI.getUserProfile();
-                
+            
                 setUserProfile(userProfileData)
             } catch (error) {
                 if(error instanceof Error){

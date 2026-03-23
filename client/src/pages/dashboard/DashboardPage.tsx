@@ -3,12 +3,16 @@ import Navbar from '../../components/navbar/Navbar';
 import { Flame, Beef, Wheat, Droplets, UtensilsCrossed} from 'lucide-react';
 import { useAuthContext } from '../../contexts/AuthContext';
 import { useGetProfile } from '../../hooks/useProfile';
+import CountUp from 'react-countup';
 
 const DashboardPage = () => {
+
 
 const userData = useAuthContext();
 
 const { userProfile } = useGetProfile();
+
+
 
   return (
     <>
@@ -28,7 +32,7 @@ const { userProfile } = useGetProfile();
               <Flame size={20} />
             </div>
             <div className='macro-info'>
-              <span className='macro-value'>{userProfile?.macros.calories}</span>
+              <span className='macro-value'><CountUp end={userProfile?.macros.calories ?? 0}></CountUp></span>
               <span className='macro-label'>Calories</span>
             </div>
           </div>
@@ -37,7 +41,7 @@ const { userProfile } = useGetProfile();
               <Beef size={20} />
             </div>
             <div className='macro-info'>
-              <span className='macro-value'>{userProfile?.macros.proteinG}</span>
+              <span className='macro-value'><CountUp end={userProfile?.macros.proteinG ?? 0}></CountUp></span>
               <span className='macro-label'>Protein</span>
             </div>
           </div>
@@ -46,7 +50,7 @@ const { userProfile } = useGetProfile();
               <Wheat size={20} />
             </div>
             <div className='macro-info'>
-              <span className='macro-value'>{userProfile?.macros.carbsG}</span>
+              <span className='macro-value'><CountUp end={userProfile?.macros.carbsG ?? 0}></CountUp></span>
               <span className='macro-label'>Carbs</span>
             </div>
           </div>
@@ -55,7 +59,7 @@ const { userProfile } = useGetProfile();
               <Droplets size={20} />
             </div>
             <div className='macro-info'>
-              <span className='macro-value'>{userProfile?.macros.fatG}</span>
+              <span className='macro-value'><CountUp end={userProfile?.macros.carbsG ?? 0}></CountUp></span>
               <span className='macro-label'>Fat</span>
             </div>
           </div>
