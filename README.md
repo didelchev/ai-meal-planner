@@ -1,1 +1,1 @@
-## Status: The project is currently in active development 🚧
+## 🚧 The project is currently in active development 🚧
