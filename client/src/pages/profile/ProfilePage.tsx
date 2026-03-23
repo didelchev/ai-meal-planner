@@ -3,6 +3,7 @@ import Navbar from '../../components/navbar/Navbar';
 import { TrendingDown, Minus, TrendingUp, Flame, Beef, Wheat, Droplets } from 'lucide-react';
 import './ProfilePage.css';
 import { useGetProfile } from '../../hooks/useProfile';
+import CountUp from 'react-countup';
 
 const ProfilePage = () => {
   const [activeTab, setActiveTab] = useState<'stats' | 'goal' | 'preferences'>('stats');
@@ -28,7 +29,7 @@ const ProfilePage = () => {
               <Flame size={16} />
             </div>
             <div>
-              <span className='profile-macro-value'>{userProfile?.macros.calories}</span>
+              <span className='profile-macro-value'><CountUp end={userProfile?.macros.calories ?? 0}></CountUp></span>
               <span className='profile-macro-label'>kcal / day</span>
             </div>
           </div>
@@ -37,7 +38,7 @@ const ProfilePage = () => {
               <Beef size={16} />
             </div>
             <div>
-              <span className='profile-macro-value'>{userProfile?.macros.proteinG}g</span>
+              <span className='profile-macro-value'><CountUp end={userProfile?.macros.proteinG ?? 0}></CountUp>g</span>
               <span className='profile-macro-label'>Protein</span>
             </div>
           </div>
@@ -46,7 +47,7 @@ const ProfilePage = () => {
               <Wheat size={16} />
             </div>
             <div>
-              <span className='profile-macro-value'>{userProfile?.macros.carbsG}g</span>
+              <span className='profile-macro-value'><CountUp end={userProfile?.macros.carbsG ?? 0}></CountUp>g</span>
               <span className='profile-macro-label'>Carbs</span>
             </div>
           </div>
@@ -55,7 +56,7 @@ const ProfilePage = () => {
               <Droplets size={16} />
             </div>
             <div>
-              <span className='profile-macro-value'>{userProfile?.macros.fatG}g</span>
+              <span className='profile-macro-value'><CountUp end={userProfile?.macros.fatG ?? 0}></CountUp>g</span>
               <span className='profile-macro-label'>Fat</span>
             </div>
           </div>
