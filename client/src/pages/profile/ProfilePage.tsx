@@ -1,16 +1,18 @@
-import { useState } from 'react';
+import { useState, type CSSProperties } from 'react';
 import Navbar from '../../components/navbar/Navbar';
 import { TrendingDown, Minus, TrendingUp, Flame, Beef, Wheat, Droplets } from 'lucide-react';
 import './ProfilePage.css';
-import { useGetProfile } from '../../hooks/useProfile';
+import { useGetProfile, useUpdateUserProfile } from '../../hooks/useProfile';
+import { ClipLoader } from 'react-spinners';
 import CountUp from 'react-countup';
 
 const ProfilePage = () => {
   const [activeTab, setActiveTab] = useState<'stats' | 'goal' | 'preferences'>('stats');
 
+  const updateUserProfile = useUpdateUserProfile();
 
-  const { userProfile } = useGetProfile();
-
+  const { userProfile, isLoading } = useGetProfile();
+  
 
   return (
     <>
@@ -23,7 +25,8 @@ const ProfilePage = () => {
         </div>
 
         {/* MACRO SUMMARY */}
-        <div className='profile-macros'>
+        {isLoading ? <ClipLoader cssOverride={{display: 'block', margin: '0 auto'}} size={50} color='#4f6ef7' /> : (
+           <div className='profile-macros'>
           <div className='profile-macro-item'>
             <div className='profile-macro-icon calories'>
               <Flame size={16} />
@@ -61,6 +64,8 @@ const ProfilePage = () => {
             </div>
           </div>
         </div>
+        )}
+       
 
         {/* TABS */}
         <div className='profile-card'>
