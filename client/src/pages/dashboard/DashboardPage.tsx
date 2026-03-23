@@ -4,13 +4,14 @@ import { Flame, Beef, Wheat, Droplets, UtensilsCrossed} from 'lucide-react';
 import { useAuthContext } from '../../contexts/AuthContext';
 import { useGetProfile } from '../../hooks/useProfile';
 import CountUp from 'react-countup';
+import { ClipLoader } from 'react-spinners';
 
 const DashboardPage = () => {
 
 
 const userData = useAuthContext();
 
-const { userProfile } = useGetProfile();
+const { userProfile, isLoading } = useGetProfile();
 
 
 
@@ -26,7 +27,8 @@ const { userProfile } = useGetProfile();
         </div>
 
         {/* MACRO TARGETS */}
-        <div className='macro-targets'>
+        {isLoading ? <ClipLoader cssOverride={{display: 'block', margin: '0 auto'}} size={50} color='#4f6ef7' /> : (
+          <div className='macro-targets'>
           <div className='macro-card'>
             <div className='macro-icon calories'>
               <Flame size={20} />
@@ -64,6 +66,7 @@ const { userProfile } = useGetProfile();
             </div>
           </div>
         </div>
+        )}
 
         {/* MEAL PLAN SECTION */}
         <div className='dashboard-section'>
