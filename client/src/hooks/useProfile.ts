@@ -8,9 +8,9 @@ export const useCreateProfile = () => {
 
     const createUserProfile = async (profileData: ProfileBody) => {
         try {
-            const response = await profileAPI.createUserProfile(profileData);
+            const user = await profileAPI.createUserProfile(profileData);
             navigate('/dashboard');
-            return response
+            return user
         } catch (error) {
             if(error instanceof Error){
                 console.log(error.message)
@@ -44,4 +44,24 @@ export const useGetProfile = () => {
     },[])
 
     return { userProfile, setUserProfile}
+}
+
+
+export const useUpdateUserProfile = () => { 
+
+    const updateUserProfile = async (profileData: ProfileBody) => {
+        try {
+            const updatedUser = await profileAPI.updateUserProfile(profileData);
+
+            return updatedUser
+        } catch (error) {
+            if(error instanceof Error){
+                console.log(error.message)
+            }else{
+                console.log('Something went wrong !')
+            }
+        }
+    }
+return updateUserProfile
+        
 }
