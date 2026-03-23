@@ -12,6 +12,10 @@ export const profileAPI = {
 
     async createUserProfile(profileData: ProfileBody): Promise<ProfileResponse>{
        return API.post(PROFILE_API_ENDPOINT, profileData) 
+    },
+
+    async updateUserProfile(profileData: ProfileBody): Promise<ProfileResponse>{
+        return API.patch(PROFILE_API_ENDPOINT, profileData)
     }
 
 };
