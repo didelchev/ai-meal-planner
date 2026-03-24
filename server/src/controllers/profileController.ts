@@ -57,7 +57,7 @@ profileController.post('/', async (req: AuthRequest, res: Response) => {
            goal: profileData.goal,
          });
 
-         res.json({ userProfile, macros})
+         res.json({ profile: userProfile, macros})
        
     } catch (error) {
         if(error instanceof Error){
