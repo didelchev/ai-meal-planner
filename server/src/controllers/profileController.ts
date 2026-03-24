@@ -2,6 +2,7 @@ import { Request, Response, Router } from "express";
 import { AuthRequest, ProfileBody } from "../types/user.types";
 import { createProfile, getProfile, updateProfile } from "../db/queries/profileQueries";
 import { calculateMacros } from "../services/tdeeService";
+import { json } from "node:stream/consumers";
 
 const profileController = Router();
 
@@ -17,10 +18,10 @@ profileController.get('/', async (req: AuthRequest, res: Response) => {
 
         const macros = calculateMacros({
             age: profile.age,
-            weightKg: profile.weight_kg,
-            heightCm: profile.height_cm,
+            weightKg: profile.weightKg,
+            heightCm: profile.heightCm,
             sex: profile.sex,
-            activityLevel: profile.activity_level,
+            activityLevel: profile.activityLevel,
             goal: profile.goal
         })
         
@@ -59,7 +60,10 @@ profileController.post('/', async (req: AuthRequest, res: Response) => {
          res.json({ userProfile, macros})
        
     } catch (error) {
-        console.error(error);
+        if(error instanceof Error){
+            res.status(400).json({message: error.message})
+
+        }
         res.status(500).json({ message: 'Server error' });
     }
 })

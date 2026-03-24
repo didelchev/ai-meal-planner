@@ -40,6 +40,8 @@ export const useGetProfile = () => {
                 }else{
                     console.log('Something went wrong !')
                 }
+            } finally {
+                setIsLoading(false)
             }
         })()
     },[])
@@ -63,6 +65,6 @@ export const useUpdateUserProfile = () => {
             }
         }
     }
-return updateUserProfile
+return  updateUserProfile 
         
 }

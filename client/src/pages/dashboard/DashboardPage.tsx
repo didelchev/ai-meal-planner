@@ -27,7 +27,7 @@ const { userProfile, isLoading } = useGetProfile();
         </div>
 
         {/* MACRO TARGETS */}
-        {isLoading ? <ClipLoader cssOverride={{display: 'block', margin: '0 auto'}} size={50} color='#4f6ef7' /> : (
+        {isLoading ? <ClipLoader cssOverride={{display: 'block', margin: '0 auto'}} size={50} color='#4f6ef7'   /> : (
           <div className='macro-targets'>
           <div className='macro-card'>
             <div className='macro-icon calories'>

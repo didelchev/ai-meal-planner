@@ -1,5 +1,6 @@
 import pool from "../pool";
 import { ProfileBody } from "../../types/user.types";
+import camelcaseKeys from "camelcase-keys";
 
 export const createProfile = async (userId: string, profile: ProfileBody) => {
   const result = await pool.query(
@@ -19,7 +20,7 @@ export const createProfile = async (userId: string, profile: ProfileBody) => {
       profile.mealsPerDay,
     ],
   );
-  return result.rows[0];
+  return  camelcaseKeys(result.rows[0]);
 };
 
 export const getProfile = async (userId: string) => {
@@ -27,7 +28,7 @@ export const getProfile = async (userId: string) => {
     `SELECT * FROM profiles  where user_id = $1`,
     [userId],
   );
-  return result.rows[0];
+  return camelcaseKeys(result.rows[0]);
 };
 
 export const updateProfile = async (userId: string, profile: ProfileBody) => {
@@ -58,5 +59,5 @@ export const updateProfile = async (userId: string, profile: ProfileBody) => {
       profile.mealsPerDay,
     ],
   );
-  return result.rows[0];
+  return camelcaseKeys(result.rows[0]);
 };

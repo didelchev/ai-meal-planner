@@ -15,7 +15,7 @@ export const profileAPI = {
     },
 
     async updateUserProfile(profileData: ProfileBody): Promise<ProfileResponse>{
-        return API.patch(PROFILE_API_ENDPOINT, profileData)
+        return API.post(PROFILE_API_ENDPOINT, profileData)
     }
 
 };
