@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { authAPI } from "../api/authApi";
 import { useAuthContext } from "../contexts/AuthContext"
 import type { User } from "../types/user.types";
@@ -5,46 +6,55 @@ import type { User } from "../types/user.types";
 
 export const useLogin = () => {
     const { saveSession } = useAuthContext();
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
     
-    const loginHandler = async (email: string, password: string ): Promise<User> => {
+    const login = async (email: string, password: string ): Promise<User> => {
+        setIsLoading(true);
+        setError(null);
         try {
             const user = await authAPI.login(email, password)
             saveSession(user);
             return user
-        } catch (error) {
-            if(error instanceof Error){
-                throw new Error(error.message)
-            }
-            throw new Error('Login Failed !')
+        } catch (err) {
+            const message = err instanceof Error ? err.message : 'Login failed !'
+            setError(message);
+            throw error
+        } finally {
+            setIsLoading(false)
         }
     }
 
-    return loginHandler
+    return { login, isLoading, error}
 
 }
 
 export const useRegister = () => {
     const { saveSession } = useAuthContext();
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
-    const registerHandler = async (email: string, username: string, password: string): Promise<User> => {
-
+    const register = async (email: string, username: string, password: string): Promise<User> => {
+        setIsLoading(true);
+        setError(null);
         try {
             const user = await authAPI.register(email, username, password);
             saveSession(user)
             return user
-            
-        } catch (error) {
-            if (error instanceof Error){
-                throw new Error(error.message)
-            }
-            throw new Error('Register Failed !')
+        } catch (err) {
+            const message = err instanceof Error ? err.message : 'Register failed'
+            console.log(message)
+            setError(message)
+            throw error
+        } finally{
+            setIsLoading(false)
         }
 
 
 
     }
 
-    return registerHandler
+    return { register, isLoading, error}
 }
 
 
