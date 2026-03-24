@@ -1,11 +1,14 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import type { RegisterBody } from '../../types/user.types';
 import { useRegister } from '../../hooks/useAuth';
 import { useForm } from '../../hooks/useForm';
 import './AuthPage.css';
 import Navbar from '../../components/navbar/Navbar';
+import { ClipLoader } from 'react-spinners';
 
 const RegisterView = () => {
+
+  const navigate = useNavigate();
 
   const initialValues = { 
     email: "",
@@ -13,16 +16,15 @@ const RegisterView = () => {
     password: ""
   }
 
-  const register = useRegister();
+  const { register, isLoading, error} = useRegister();
 
   const registerHandler = async (formData: RegisterBody) => {
       try {
         await register(formData.email, formData.username, formData.password)
-        console.log("Success")
-      } catch (error) {
-        console.log(error)
-      }
-
+        navigate('/')
+      } catch (err) {
+        console.error(error)
+      } 
   }
 
   const { formData , changeHandler, submitHandler } = useForm(initialValues, registerHandler)
@@ -86,8 +88,27 @@ const RegisterView = () => {
             />
           </div>
 
-          <button className='auth-button'>Create Account</button>
+          <button className='auth-button' type='submit' disabled={isLoading} style={{ cursor: isLoading ? 'not-allowed' : 'pointer' }}>
+            {isLoading ? (
+                <ClipLoader size={20} color="#eef2ff" />
+                ) : 
+                ('Register')}
+          </button>
         </form>
+
+        {error && (
+            <div
+              style={{
+                color: "red",
+                border: "1px solid red",
+                padding: "10px",
+                marginTop: "10px",
+                textAlign: "center",
+              }}
+            >
+              Register Failed: {error}
+            </div>
+          )}
 
         <div className='auth-footer'>
           <p>Already have an account? <Link to='/login'>Sign in</Link></p>
