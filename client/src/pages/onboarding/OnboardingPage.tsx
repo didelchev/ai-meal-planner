@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useForm } from '../../hooks/useForm';
 import './OnboardingPage.css';
 import { TrendingDown, Minus, TrendingUp } from 'lucide-react';
@@ -8,47 +7,36 @@ import { useCreateProfile } from '../../hooks/useProfile';
 
 const OnboardingPage = () => {
 
-const [sex , setSex] =useState<"male" | "female">('male');
-const [goal, setGoal] = useState<"maintain" | "lose" | "gain">('maintain');
-const [activityLevel, setActivityLevel] = useState<"sedentary" | "light" | "moderate" | "active" | "very_active">('sedentary');
-const [mealsPerDay, setMealsPerDay] = useState(3);
-const [dietaryRestrictions, setDietaryRestrictions] = useState<string[]>([]);
-
 const createUserProfile = useCreateProfile();
 
-
-const profileHandler = async (formData: Record<string, string>) => {
-  const profileData: ProfileBody = { 
-    age: Number(formData.age),
-    weightKg: Number(formData.weightKg),
-    heightCm: Number(formData.heightCm),
-    sex,
-    goal,
-    activityLevel,
-    dietaryRestrictions,
-    foodDislikes: formData.foodDislikes,
-    mealsPerDay,
-  }
-  await createUserProfile(profileData)
+const initialValues: ProfileBody = {
+  age: 0,
+  weightKg: 0,
+  heightCm: 0,
+  sex: 'male',
+  activityLevel: 'sedentary',
+  goal: 'maintain',
+  dietaryRestrictions: [],
+  foodDislikes: '',
+  mealsPerDay: 3
 }
 
+const { formData, changeHandler, setField, submitHandler } = useForm<ProfileBody>(
+  initialValues, 
+  async (profileData ) => {
+    await createUserProfile(profileData)
+})
 
-const { formData, changeHandler, submitHandler } = useForm({
-  age: '',
-  weightKg: '',
-  heightCm: '',
-  foodDislikes: ''
-}, profileHandler)
 
 const handleDietaryRestrictions = (e: React.ChangeEvent<HTMLInputElement>) => {
-  const { value, checked } = e.target;
-  if(checked){
-    setDietaryRestrictions(currentState => [...currentState, value])
-  }else{ 
-    setDietaryRestrictions(currentState => currentState.filter(dietaryRestriction => dietaryRestriction !== value))
-  }
-
-}
+    const { value, checked } = e.target;
+    setField(
+      'dietaryRestrictions',
+      checked
+        ? [...formData.dietaryRestrictions, value]
+        : formData.dietaryRestrictions.filter(r => r !== value)
+    );
+  };
 
   return (
     <div className='onboarding-container'>
@@ -90,12 +78,17 @@ const handleDietaryRestrictions = (e: React.ChangeEvent<HTMLInputElement>) => {
             <div className='form-group'>
               <label>Sex</label>
               <div className='sex-cards'>
-                <div className={`sex-card ${sex === 'male' ? 'active': ''}`} onClick={() => setSex('male')}>
-                  <span>Male</span>
-                </div>
-                <div className={`sex-card ${sex === 'female' ? 'active': ''}`} onClick={() => setSex('female')}>
-                  <span>Female</span>
-                </div>
+                {(["male", "female"] as const).map((sex) => (
+                  <div 
+                  key={sex}
+                  className={`sex-card ${formData.sex === sex ? 'active' : ''}`}
+                  onClick={() => setField('sex', sex)}
+                  >
+                  <span>{sex.charAt(0).toUpperCase() + sex.slice(1)}</span>
+                  </div>
+                ))
+
+                }
               </div>
             </div>
           </div>
@@ -104,21 +97,21 @@ const handleDietaryRestrictions = (e: React.ChangeEvent<HTMLInputElement>) => {
           <div className='form-section'>
             <h3>What is your goal?</h3>
             <div className='goal-cards'>
-              <div className={`goal-card ${goal === 'lose' ? 'active' : ''}`} onClick={() => setGoal('lose')}>
+              <div className={`goal-card ${formData.goal === 'lose' ? 'active' : ''}`} onClick={() => setField('goal', 'lose')}>
                 <div className='goal-card-icon'>
                   <TrendingDown size={24} />
                 </div>
                 <h4>Lose weight</h4>
                 <p>Reduce body fat while preserving muscle</p>
               </div>
-              <div className={`goal-card ${goal === 'maintain' ? 'active' : ''}`} onClick={() => setGoal('maintain')}>
+              <div className={`goal-card ${formData.goal === 'maintain' ? 'active' : ''}`} onClick={() => setField('goal', 'maintain')}>
                 <div className='goal-card-icon'>
                   <Minus size={24} />
                 </div>
                 <h4>Maintain weight</h4>
                 <p>Keep current weight and improve composition</p>
               </div>
-              <div className={`goal-card ${goal === 'gain' ? 'active' : ''}`} onClick={() => setGoal('gain')}>
+              <div className={`goal-card ${formData.goal === 'gain' ? 'active' : ''}`} onClick={() => setField('goal', 'gain')}>
                 <div className='goal-card-icon'>
                   <TrendingUp size={24} />
                 </div>
@@ -131,28 +124,17 @@ const handleDietaryRestrictions = (e: React.ChangeEvent<HTMLInputElement>) => {
           {/* ACTIVITY */}
           <div className='form-section'>
             <h3>Activity level</h3>
-            <div className='activity-cards'>
-              <div className={`activity-card ${activityLevel === 'sedentary' ? 'active' : ''}`} onClick={() => setActivityLevel('sedentary')}>
-                <span className='activity-name'>Sedentary</span>
-                <span className='activity-desc'>Little or no exercise</span>
-              </div>
-              <div className={`activity-card ${activityLevel === 'light' ? 'active' : ''}`} onClick={() => setActivityLevel('light')}>
-                <span className='activity-name'>Light</span>
-                <span className='activity-desc'>1-3 days/week</span>
-              </div>
-              <div className={`activity-card ${activityLevel === 'moderate' ? 'active' : ''}`} onClick={() => setActivityLevel('moderate')}>
-                <span className='activity-name'>Moderate</span>
-                <span className='activity-desc'>3-5 days/week</span>
-              </div>
-              <div className={`activity-card ${activityLevel === 'active' ? 'active' : ''}`} onClick={() => setActivityLevel('active')}>
-                <span className='activity-name'>Active</span>
-                <span className='activity-desc'>6-7 days/week</span>
-              </div>
-              <div className={`activity-card ${activityLevel === 'very_active' ? 'active' : ''}`} onClick={() => setActivityLevel('very_active')}>
-                <span className='activity-name'>Very Active</span>
-                <span className='activity-desc'>Intense daily</span>
-              </div>
-            </div>
+            <div className="activity-cards">
+                    {(["sedentary", "light", "moderate", "active", "very_active"] as const).map((level) => (
+                      <div
+                        key={level}
+                        className={`activity-card ${formData.activityLevel === level ? "active" : ""}`}
+                        onClick={() => setField('activityLevel', level as any )}
+                      >
+                        <span className="activity-name">{level.replace("_", " ")}</span>
+                      </div>
+                    ))}
+                  </div>
           </div>
 
           {/* PREFERENCES */}
@@ -196,20 +178,18 @@ const handleDietaryRestrictions = (e: React.ChangeEvent<HTMLInputElement>) => {
 
             <div className='form-group'>
               <label>Meals per day</label>
-              <div className='meals-cards'>
-                <div className={`meals-card ${mealsPerDay === 3 ? 'active' : ''}`} onClick={() => { setMealsPerDay(3)}}>
-                  <span className='meals-number'>3</span>
-                  <span className='meals-label'>Meals</span>
-                </div>
-                <div className={`meals-card ${mealsPerDay === 4 ? 'active' : ''}`} onClick={() => { setMealsPerDay(4)}}>
-                  <span className='meals-number'>3+</span>
-                  <span className='meals-label'>Meals + Snacks</span>
-                </div>
-                <div className={`meals-card ${mealsPerDay === 5 ? 'active' : ''}`} onClick={() => { setMealsPerDay(5)}}>
-                  <span className='meals-number'>5</span>
-                  <span className='meals-label'>Small Meals</span>
-                </div>
-              </div>
+              <div className="meals-cards">
+                    {[3, 4, 5].map((num) => (
+                      <div
+                        key={num}
+                        className={`meals-card ${formData.mealsPerDay === num ? "active" : ""}`}
+                        onClick={() =>  setField('mealsPerDay', num)  }
+                      >
+                        <span className="meals-number">{num === 4 ? "3+" : num}</span>
+                        <span className="meals-label">Meals</span>
+                      </div>
+                    ))}
+                  </div>
             </div>
           </div>
 
