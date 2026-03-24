@@ -4,15 +4,7 @@ import { useUpdateUserProfile } from "../../hooks/useProfile";
 import type { ProfileBody, ProfileResponse } from "../../types/user.types";
 import { useState } from "react";
 import { useForm } from "../../hooks/useForm";
-import {
-  Beef,
-  Droplets,
-  Flame,
-  Minus,
-  TrendingDown,
-  TrendingUp,
-  Wheat,
-} from "lucide-react";
+import { Beef, Droplets, Flame, Minus, TrendingDown, TrendingUp, Wheat,} from "lucide-react";
 import CountUp from "react-countup";
 import Navbar from "../../components/navbar/Navbar";
 
@@ -23,56 +15,38 @@ interface ProfileFormProps {
 
 const ProfileForm = ({ userProfile, setUserProfile }: ProfileFormProps) => {
   const [activeTab, setActiveTab] = useState<"stats" | "goal" | "preferences">("stats");
-
-  const [sex, setSex] = useState<"male" | "female">(userProfile.profile.sex);
-  const [goal, setGoal] = useState<"maintain" | "lose" | "gain">(userProfile.profile.goal);
-  const [activityLevel, setActivityLevel] = useState<"sedentary" | "light" | "moderate" | "active" | "very_active">(userProfile.profile.activityLevel);
-  const [mealsPerDay, setMealsPerDay] = useState(userProfile.profile.mealsPerDay);
-  const [dietaryRestrictions, setDietaryRestrictions] = useState<string[]>(userProfile.profile.dietaryRestrictions ?? []);
-
   const updateUserProfile = useUpdateUserProfile();
 
-  const updateProfileHandler = async (formData: Record<string, string>) => {
-    const profileData: ProfileBody = {
-      age: Number(formData.age), 
-      weightKg: Number(formData.weightKg),
-      heightCm: Number(formData.heightCm),
-      foodDislikes: formData.foodDislikes || '',
-      sex,
-      goal,
-      activityLevel,
-      mealsPerDay,
-      dietaryRestrictions,
-    };
 
-    try {
-      const updatedUser = await updateUserProfile(profileData);
-      if (updatedUser) {
-        setUserProfile(updatedUser);
-      }
-    } catch (error) {
-      console.error("Update failed:", error);
-    }
-  };
-
-  const { formData, changeHandler, submitHandler } = useForm(
+  const { formData, changeHandler, setField, submitHandler } = useForm<ProfileBody>(
     {
-      age: String(userProfile.profile.age),
-      weightKg: String(userProfile.profile.weightKg),
-      heightCm: String(userProfile.profile.heightCm),
-      foodDislikes: String(userProfile.profile.foodDislikes || ""),
+      age: userProfile.profile.age,
+      weightKg: userProfile.profile.weightKg,
+      heightCm: userProfile.profile.heightCm,
+      sex: userProfile.profile.sex,
+      goal: userProfile.profile.goal,
+      activityLevel: userProfile.profile.activityLevel,
+      mealsPerDay: userProfile.profile.mealsPerDay,
+      dietaryRestrictions: userProfile.profile.dietaryRestrictions ?? [],
+      foodDislikes: userProfile.profile.foodDislikes || '',
     },
-    updateProfileHandler
+
+    async (profileData) => {
+      const updatedUser = await updateUserProfile(profileData);
+      if (updatedUser) setUserProfile(updatedUser);
+    }
   );
 
   const handleDietaryRestrictions = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, checked } = e.target;
-    if (checked) {
-      setDietaryRestrictions((current) => [...current, value]);
-    } else {
-      setDietaryRestrictions((current) => current.filter((item) => item !== value));
-    }
+    setField(
+      'dietaryRestrictions',
+      checked
+        ? [...formData.dietaryRestrictions, value]
+        : formData.dietaryRestrictions.filter(r => r !== value)
+    );
   };
+
 
   return (
     <>
@@ -161,13 +135,13 @@ const ProfileForm = ({ userProfile, setUserProfile }: ProfileFormProps) => {
                 <div className="form-group">
                   <label>Sex</label>
                   <div className="sex-cards">
-                    {["male", "female"].map((s) => (
+                    {(["male", "female"] as const).map((sex) => (
                       <div
-                        key={s}
-                        className={`sex-card ${sex === s ? "active" : ""}`}
-                        onClick={() => setSex(s as any)}
+                        key={sex}
+                        className={`sex-card ${formData.sex === sex ? "active" : ""}`}
+                        onClick={() => setField('sex', sex)}
                       >
-                        <span>{s.charAt(0).toUpperCase() + s.slice(1)}</span>
+                        <span>{sex.charAt(0).toUpperCase() + sex.slice(1)}</span>
                       </div>
                     ))}
                   </div>
@@ -181,15 +155,15 @@ const ProfileForm = ({ userProfile, setUserProfile }: ProfileFormProps) => {
                 <div className="form-group">
                   <label>Your goal</label>
                   <div className="goal-cards">
-                    <div className={`goal-card ${goal === "lose" ? "active" : ""}`} onClick={() => setGoal("lose")}>
+                    <div className={`goal-card ${formData.goal === "lose" ? "active" : ""}`} onClick={() => setField("goal", 'lose')}>
                       <div className="goal-card-icon"><TrendingDown size={24} /></div>
                       <h4>Lose weight</h4>
                     </div>
-                    <div className={`goal-card ${goal === "maintain" ? "active" : ""}`} onClick={() => setGoal("maintain")}>
+                    <div className={`goal-card ${formData.goal === "maintain" ? "active" : ""}`} onClick={() => setField("goal", 'maintain')}>
                       <div className="goal-card-icon"><Minus size={24} /></div>
                       <h4>Maintain</h4>
                     </div>
-                    <div className={`goal-card ${goal === "gain" ? "active" : ""}`} onClick={() => setGoal("gain")}>
+                    <div className={`goal-card ${formData.goal === "gain" ? "active" : ""}`} onClick={() => setField("goal", 'gain')}>
                       <div className="goal-card-icon"><TrendingUp size={24} /></div>
                       <h4>Build muscle</h4>
                     </div>
@@ -199,11 +173,11 @@ const ProfileForm = ({ userProfile, setUserProfile }: ProfileFormProps) => {
                 <div className="form-group">
                   <label>Activity level</label>
                   <div className="activity-cards">
-                    {["sedentary", "light", "moderate", "active", "very_active"].map((level) => (
+                    {(["sedentary", "light", "moderate", "active", "very_active"] as const).map((level) => (
                       <div
                         key={level}
-                        className={`activity-card ${activityLevel === level ? "active" : ""}`}
-                        onClick={() => setActivityLevel(level as any)}
+                        className={`activity-card ${formData.activityLevel === level ? "active" : ""}`}
+                        onClick={() => setField('activityLevel', level as any )}
                       >
                         <span className="activity-name">{level.replace("_", " ")}</span>
                       </div>
@@ -224,7 +198,7 @@ const ProfileForm = ({ userProfile, setUserProfile }: ProfileFormProps) => {
                         <input
                           type="checkbox"
                           value={res}
-                          checked={dietaryRestrictions.includes(res)}
+                          checked={formData.dietaryRestrictions.includes(res)}
                           onChange={handleDietaryRestrictions}
                         />
                         <span>{res}</span>
@@ -251,8 +225,8 @@ const ProfileForm = ({ userProfile, setUserProfile }: ProfileFormProps) => {
                     {[3, 4, 5].map((num) => (
                       <div
                         key={num}
-                        className={`meals-card ${mealsPerDay === num ? "active" : ""}`}
-                        onClick={() => setMealsPerDay(num)}
+                        className={`meals-card ${formData.mealsPerDay === num ? "active" : ""}`}
+                        onClick={() =>  setField('mealsPerDay', num)  }
                       >
                         <span className="meals-number">{num === 4 ? "3+" : num}</span>
                         <span className="meals-label">Meals</span>
