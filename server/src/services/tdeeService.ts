@@ -1,3 +1,6 @@
+import { MarcoTargets } from "../types/user.types.js";
+
+
 export interface UserStats { 
     age: number;
     weightKg: number;
@@ -7,12 +10,6 @@ export interface UserStats {
     goal: 'lose' | 'maintain' | 'gain';
 }
 
-export interface MarcoTargets { 
-    calories: number;
-    proteinG:  number;
-    carbsG: number;
-    fatG: number;
-}
 
 const activityMultipliers: Record<string, number> = { 
     sedentary: 1.2,

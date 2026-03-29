@@ -1,8 +1,9 @@
 import { Request, Response, Router } from "express";
-import { AuthRequest, ProfileBody } from "../types/user.types";
-import { createProfile, getProfile, updateProfile } from "../db/queries/profileQueries";
-import { calculateMacros } from "../services/tdeeService";
+import { AuthRequest, ProfileBody } from "../types/user.types.js";
+import { createProfile, getProfile, updateProfile } from "../db/queries/profileQueries.js";
+import { calculateMacros } from "../services/tdeeService.js";
 import { json } from "node:stream/consumers";
+import { buildMealPlanPrompt } from "../services/promptBuilderService.js";
 
 const profileController = Router();
 
@@ -25,6 +26,8 @@ profileController.get('/', async (req: AuthRequest, res: Response) => {
             goal: profile.goal
         })
         
+        const prompt = buildMealPlanPrompt(profile as ProfileBody, macros)
+
         res.json({ profile, macros})
     } catch (error) {
         console.error(error)

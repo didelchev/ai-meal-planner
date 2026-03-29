@@ -58,3 +58,10 @@ export interface ProfileBody {
   foodDislikes: string;
   mealsPerDay: number;
 }
+
+export interface MarcoTargets { 
+    calories: number;
+    proteinG:  number;
+    carbsG: number;
+    fatG: number;
+}
